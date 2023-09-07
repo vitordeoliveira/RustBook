@@ -28,7 +28,6 @@ fn _move_a_box(b: Box<i32>) {
 }
 
 fn main() {
-
     println!("\n\nReferences and Borrowing 4.2\n\n");
     let x = true;
     read(x);
@@ -204,5 +203,151 @@ fn main() {
     // Data must outlive all references that point to it.
 
     println!("\n\nFixing Ownership Errors 4.3\n\n");
+    println!("Fixing an Unsafe Program: Returning a Reference to the Stack");
+    // fn return_a_string() -> &String {
+    //     let s = String::from("Hello world");
+    //     &s
+    // }
 
+    fn _return_a_string_2() -> String {
+        let s = String::from("Hello world");
+        s
+    }
+
+    fn _return_a_string_3() -> &'static str {
+        "Hello world"
+    }
+
+    use std::rc::Rc;
+    fn _return_a_string_4() -> Rc<String> {
+        let s = Rc::new(String::from("Hello world"));
+        Rc::clone(&s)
+    }
+
+    fn _return_a_string_5(output: &mut String) {
+        output.replace_range(.., "Hello world");
+    }
+
+    // Next exemple
+    println!("\n\nFixing an Unsafe Program: Not Enough Permissions\n\n");
+
+    let name = vec![String::from("Ferris")];
+    let first = &name[0];
+    stringify_name_with_title4(&name);
+    println!("{}", first);
+    println!("{:?}", name);
+
+    // Next exemple
+    println!("\n\nFixing an Unsafe Program: Copying vs. Moving Out of a Collection\n\n");
+
+    let v: Vec<i32> = vec![0, 1, 2];
+    let n_ref: &i32 = &v[0];
+    let n: i32 = *n_ref;
+
+    // if we change the type of elements in the vector from i32 to String? Then it turns out we no longer have the necessary permissions:
+    // What happens here is a double-free. After executing let s = *s_ref, both v and s think they own "Hello world".
+    // After s is dropped, "Hello world" is deallocated.
+    // Then v is dropped, and undefined behavior happens when the string is freed a second time.
+    let v: Vec<String> = vec![String::from("Hello world")];
+    let s_ref: &String = &v[0];
+    // let s: String = *s_ref;
+
+    // However, this undefined behavior does not happen when the vector contains i32 elements.
+    // The difference is that copying a String copies a pointer to heap data. Copying an i32 does not. In technical terms,
+    // Rust says that the type i32 implements the Copy trait, while String does not implement Copy (we will discuss traits in a later chapter).
+    // In sum, if a value does not own heap data, then it can be copied without a move. For example:
+    // An i32 does not own heap data, so it can be copied without a move.
+    // A String does own heap data, so it can not be copied without a move.
+    // An &String does not own heap data, so it can be copied without a move.
+
+    // Note: One exception to this rule is mutable references. For example, &mut i32 is not a copyable type. So if you do something like:
+    let mut n = 0;
+    let a = &mut n;
+    let b = a;
+    // Then a cannot be used after being assigned to b. That prevents two mutable references to the same data from being used at the same time.
+
+    // So if we have a vector of non-Copy types like String, then how do we safely get access to an element of the vector? 
+    // Here's a few different ways to safely do so. First, you can avoid taking ownership of the string and just use an immutable reference:
+    let v: Vec<String> = vec![String::from("Hello world")];
+    let s_ref: &String = &v[0];
+    println!("{s_ref}!");
+    // Second, you can clone the data if you want to get ownership of the string while leaving the vector alone:
+
+    let v: Vec<String> = vec![String::from("Hello world")];
+    let mut s: String = v[0].clone();
+    s.push('!');
+    println!("{s}");
+    // Finally, you can use a method like Vec::remove to move the string out of the vector:
+
+    let mut v: Vec<String> = vec![String::from("Hello world")];
+    let mut s: String = v.remove(0);
+    s.push('!');
+    println!("{s}");
+    assert!(v.len() == 0);
+}
+
+// fn stringify_name_with_title(name: &Vec<String>) -> String {
+//     name.push(String::from("Esq."));
+//     let full = name.join(" ");
+//     full
+// }
+
+/// But this is also not a good solution!
+/// It is very rare for Rust functions to take ownership of heap-owning data structures like Vec and String.
+/// This version of stringify_name_with_title would make the input name unusable, which is very annoying to a
+/// caller as we discussed at the beginning of "References and Borrowing".
+fn _stringify_name_with_title1(mut name: Vec<String>) -> String {
+    name.push(String::from("Esq."));
+    let full = name.join(" ");
+    full
+}
+
+/// But this is not a good solution! Functions should not mutate their inputs if the caller would not expect it.
+/// A person calling stringify_name_with_title probably does not expect their vector to be modified by this function.
+/// Another function like add_title_to_name might be expected to mutate its input, but not our function.
+fn _stringify_name_with_title2(name: &mut Vec<String>) -> String {
+    name.push(String::from("Esq."));
+    let full = name.join(" ");
+    full
+}
+
+/// So the choice of &Vec is actually a good one, which we do not want to change. Instead, we can change the body of the function.
+/// There are many possible fixes which vary in how much memory they use. One possibility is to clone the input name:
+fn _stringify_name_with_title3(name: &Vec<String>) -> String {
+    let mut name_clone = name.clone();
+    name_clone.push(String::from("Esq."));
+    let full = name_clone.join(" ");
+    full
+}
+
+/// By cloning name, we are allowed to mutate the local copy of the vector.
+/// However, the clone copies every string in the input. We can avoid unnecessary copies by adding the suffix later:
+fn stringify_name_with_title4(name: &Vec<String>) -> String {
+    let mut full = name.join(" ");
+    full.push_str(" Esq.");
+    full
+}
+
+/// This program is rejected by the borrow checker because let largest =
+/// .. removes the W permissions on dst. However, dst.push(..) requires the W permission. Again, we should ask: why is this program unsafe?
+/// Because dst.push(..) could deallocate the contents of dst, invalidating the reference largest.
+fn _add_big_strings_0(dst: &mut Vec<String>, src: &[String]) {
+    let largest: &String = dst.iter().max_by_key(|s| s.len()).unwrap();
+    for s in src {
+        if s.len() > largest.len() {
+            // dst.push(s.clone());
+        }
+    }
+}
+
+/// A final possibility is to copy out the length of largest,
+/// since we don't actually need the contents of largest, just its length.
+/// This solution is arguably the most idiomatic and the most performant:
+fn _add_big_strings_1(dst: &mut Vec<String>, src: &[String]) {
+    let largest_len: usize = dst.iter().max_by_key(|s| s.len()).unwrap().len();
+    for s in src {
+        if s.len() > largest_len {
+            dst.push(s.clone());
+        }
+    }
 }

@@ -13,3 +13,14 @@ Mutation is changing the data itself
 2. Creating a reference will transfer permissions from the borrowed path to the reference.
 3. Permissions are returned once the reference's lifetime has ended.
 4. Data must outlive all references that point to it.
+
+
+
+if a value does not own heap data, then it can be copied without a move. For example:
+
+An i32 does not own heap data, so it can be copied without a move.
+
+A String does own heap data, so it can not be copied without a move.
+
+An &String does not own heap data, so it can be copied without a move.
+
