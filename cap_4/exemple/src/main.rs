@@ -266,7 +266,7 @@ fn main() {
     let b = a;
     // Then a cannot be used after being assigned to b. That prevents two mutable references to the same data from being used at the same time.
 
-    // So if we have a vector of non-Copy types like String, then how do we safely get access to an element of the vector? 
+    // So if we have a vector of non-Copy types like String, then how do we safely get access to an element of the vector?
     // Here's a few different ways to safely do so. First, you can avoid taking ownership of the string and just use an immutable reference:
     let v: Vec<String> = vec![String::from("Hello world")];
     let s_ref: &String = &v[0];
@@ -284,6 +284,24 @@ fn main() {
     s.push('!');
     println!("{s}");
     assert!(v.len() == 0);
+
+    // Fixing a Safe Program: Mutating Different Array Elements
+    // let mut a = [0, 1, 2, 3];
+    // let x = &mut a[0];
+    // let y = &a[1];
+    // *x += *y;
+
+    let mut a = [0, 1, 2, 3];
+    let (x, rest) = a.split_first_mut().unwrap();
+    let y = &rest[0];
+    *x += *y;
+
+    let mut a = [0, 1, 2, 3];
+    let x = &mut a[0] as *mut i32;
+    let y = &a[1] as *const i32;
+    unsafe {
+        *x += *y;
+    } // DO NOT DO THIS unless you know what you're doing!
 }
 
 // fn stringify_name_with_title(name: &Vec<String>) -> String {
