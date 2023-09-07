@@ -27,7 +27,7 @@ fn _move_a_box(b: Box<i32>) {
     // This space intentionally left blank
 }
 
-fn main() {
+fn four_two(){
     println!("\n\nReferences and Borrowing 4.2\n\n");
     let x = true;
     read(x);
@@ -201,8 +201,9 @@ fn main() {
     // Creating a reference will transfer permissions from the borrowed path to the reference.
     // Permissions are returned once the reference's lifetime has ended.
     // Data must outlive all references that point to it.
+}
 
-    println!("\n\nFixing Ownership Errors 4.3\n\n");
+fn four_three(){
     println!("Fixing an Unsafe Program: Returning a Reference to the Stack");
     // fn return_a_string() -> &String {
     //     let s = String::from("Hello world");
@@ -302,6 +303,22 @@ fn main() {
     unsafe {
         *x += *y;
     } // DO NOT DO THIS unless you know what you're doing!
+}
+
+fn four_four(){
+    
+}
+
+fn main() {
+    println!("References and Borrowing 4.2\n\n");
+    four_two();
+
+    println!("\n\nFixing Ownership Errors 4.3\n\n");
+    four_three();
+
+    println!("\n\nThe Slice Type 4.3\n\n");
+    four_four();
+
 }
 
 // fn stringify_name_with_title(name: &Vec<String>) -> String {
