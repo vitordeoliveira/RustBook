@@ -27,7 +27,7 @@ fn _move_a_box(b: Box<i32>) {
     // This space intentionally left blank
 }
 
-fn four_two(){
+fn four_two() {
     println!("\n\nReferences and Borrowing 4.2\n\n");
     let x = true;
     read(x);
@@ -203,7 +203,7 @@ fn four_two(){
     // Data must outlive all references that point to it.
 }
 
-fn four_three(){
+fn four_three() {
     println!("Fixing an Unsafe Program: Returning a Reference to the Stack");
     // fn return_a_string() -> &String {
     //     let s = String::from("Hello world");
@@ -305,7 +305,132 @@ fn four_three(){
     } // DO NOT DO THIS unless you know what you're doing!
 }
 
-fn four_four(){
+fn four_four() {
+    println!("\n\nThe Slice Type\n\n");
+    fn first_word(s: &String) -> usize {
+        let bytes = s.as_bytes();
+
+        for (i, &item) in bytes.iter().enumerate() {
+            if item == b' ' {
+                return i;
+            }
+        }
+
+        s.len()
+    }
+
+    // let mut s = String::from("hello world");
+    // let word = first_word(&s);
+    // s.clear();
+
+    // let s = String::from("hello world");
+    // let hello: &str = &s[0..5];
+    // let world: &str = &s[6..11];
+    // let s2: &String = &s;
+
+    fn first_word_rewrite(s: &str) -> &str {
+        let bytes = s.as_bytes();
+
+        for (i, &item) in bytes.iter().enumerate() {
+            if item == b' ' {
+                return &s[0..i];
+            }
+        }
+        &s[..]
+    }
+
+    let s = String::from("hello world");
+    let word = first_word_rewrite(&s);
+    // s.clear();
+    println!("the first word is: {}", word);
+
+    let my_string = String::from("hello world");
+
+    // `first_word` works on slices of `String`s, whether partial or whole
+    let word = first_word_rewrite(&my_string[0..6]);
+    let word = first_word_rewrite(&my_string[..]);
+    // `first_word` also works on references to `String`s, which are equivalent
+    // to whole slices of `String`s
+    let word = first_word(&my_string);
+
+    // my_string.clear();
+    let my_string_literal = "hello world";
+
+    // `first_word` works on slices of string literals, whether partial or whole
+    let word = first_word_rewrite(&my_string_literal[0..6]);
+    let word = first_word_rewrite(&my_string_literal[..]);
+
+    // Because string literals *are* string slices already,
+    // this works too, without the slice syntax!
+    let word = first_word_rewrite(my_string_literal);
+
+    let a = [1, 2, 3, 4, 5];
+
+    let slice = &a[1..3];
+
+    assert_eq!(slice, &[2, 3]);
+
+    // Summary
+    // Slices are a special kind of reference that refer to sub-ranges of a sequence, like a string or a vector.
+    // At runtime, a slice is represented as a "fat pointer" which contains a pointer to the beginning of the range and a length of the range.
+    // One advantage of slices over index-based ranges is that the slice cannot be invalidated while it's being used.
+}
+
+fn four_five() {
+    type Document = Vec<String>;
+
+    fn new_document(words: Vec<String>) -> Document {
+        words
+    }
+
+    fn add_word(this: &mut Document, word: String) {
+        this.push(word);
+    }
+
+    fn get_words(this: &Document) -> &[String] {
+        this.as_slice()
+    }
+
+    let words = vec!["hello".to_string()];
+    let d: Document = new_document(words);
+    // .to_vec() converts &[String] to Vec<String> by cloning each string
+    let words_copy = get_words(&d).to_vec();
+    let mut d2 = new_document(words_copy);
+    add_word(&mut d2, "world".to_string());
+
+    // The modification to `d2` does not affect `d`
+    assert!(!get_words(&d).contains(&"world".into()));
+
+    // NEXT EXEMPLE
+    // This diagram illustrates how each concept looks at runtime:
+    let mut a_num = 0;
+    inner(&mut a_num);
+
+    fn inner(x: &mut i32) {
+        let another_num = 1;
+        let a_stack_ref = &another_num;
+
+        let a_box = Box::new(2);
+        let a_box_stack_ref = &a_box;
+        let a_box_heap_ref = &*a_box;
+
+        *x += 5;
+    }
+
+    // Slices are a special kind of reference that refer to a contiguous sequence of data in memory.
+    // This diagram illustrates how a slice refers to a subsequence of characters in a string:
+
+    let mut s = String::from("Hello");
+    let s_ref = &s;
+    let s2 = &*s.clone();
+    let s3 = &[s];
+    println!("{} - {:?}", s2, s3);
+
+    let mut v = vec![1, 2, 3];
+    let n = &v[0];
+    v.push(4);
+    let n = &v[0];
+    println!("{n}");
     
 }
 
@@ -319,6 +444,7 @@ fn main() {
     println!("\n\nThe Slice Type 4.3\n\n");
     four_four();
 
+    four_five();
 }
 
 // fn stringify_name_with_title(name: &Vec<String>) -> String {
