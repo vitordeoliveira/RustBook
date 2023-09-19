@@ -437,7 +437,7 @@ fn four_five() {
 fn main() {
     println!("References and Borrowing 4.2\n\n");
     four_two();
-
+    
     println!("\n\nFixing Ownership Errors 4.3\n\n");
     four_three();
 
