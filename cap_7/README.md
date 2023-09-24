@@ -6,3 +6,5 @@ Packages: A Cargo feature that lets you build, test, and share crates
 Crates: A tree of modules that produces a library or executable
 Modules and use: Let you control the organization, scope, and privacy of path
 Paths: A way of naming an item, such as a struct, function, or module
+
+#### The mod keyword declares modules, and Rust looks in a file with the same name as the module for the code that goes into that module.
