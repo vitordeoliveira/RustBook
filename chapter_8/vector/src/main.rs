@@ -88,4 +88,34 @@ fn main() {
     let mut iter: Range<usize> = 0..v.len();
     let i1: usize = iter.next().unwrap();
     let n1: &i32 = &v[i1];
+
+    // Using an Enum to Store Multiple Types
+    enum SpreadsheetCell {
+        Int(i32),
+        Float(f64),
+        Text(String),
+    }
+
+    let row = vec![
+        SpreadsheetCell::Int(3),
+        SpreadsheetCell::Text(String::from("blue")),
+        SpreadsheetCell::Float(10.12),
+    ];
+
+    // next
+
+  let mut v: Vec<i32> = vec![1, 2, 3];
+  let mut v2: Vec<&mut i32> = Vec::new();
+  for i in &mut v {
+    v2.push(i);
+  }
+  *v2[0] = 5;
+  let a = *v2[0];
+  let b = v[0];
+  println!("{a} {b}");
+
+//   The output of this program will be:
+//   5 5
+//   Context: i has type &mut i32, meaning it is a pointer to a number within v. 
+//   So if we push i into v2, then v2 contains pointers to v. Therefore mutating v2[0] actually mutates v[0].
 }
