@@ -55,7 +55,6 @@ fn main() {
     }
     println!("{:?}", v);
 
-
     let mut v = vec![100, 32, 57];
     for n_ref in &mut v {
         // n_ref has type &mut i32
@@ -63,5 +62,30 @@ fn main() {
     }
     println!("{:?}", v);
 
+    // Safely Using Iterators
+    // We can see how iterators work by desugaring a for-loop into the corresponding method calls of Vec::iter and Iterator::next:
+    use core::slice::Iter;
+    use std::ops::Range;
+    let mut v: Vec<i32> = vec![1, 2];
+    let mut iter: Iter<'_, i32> = v.iter();
+    let n1: &i32 = iter.next().unwrap();
+    let n2: &i32 = iter.next().unwrap();
+    let end: Option<&i32> = iter.next();
 
+    // As we discussed in Chapter 4, the safety issue beneath this error is reading deallocated memory.
+    // As soon as v.push(1) happens, the vector will reallocate its contents and invalidate the iterator's pointer.
+    // So to use iterators safely, Rust does not allow you to add or remove elements from the vector during iteration.
+    // One way to iterate over a vector without using a pointer is with a range, like we used for string slices in Chapter 4.4.
+    // For example, the range 0 .. v.len() is an iterator over all indices of a vector v, as seen here:
+    fn dup_in_place(v: &mut Vec<i32>) {
+        for n_ref in v.iter() {
+            // Notice that v.iter() removes the W permission from *v. Therefore the v.push(..) operation is missing the expected W permission
+            // v.push(*n_ref);
+        }
+    }
+
+    let mut v: Vec<i32> = vec![1, 2];
+    let mut iter: Range<usize> = 0..v.len();
+    let i1: usize = iter.next().unwrap();
+    let n1: &i32 = &v[i1];
 }
