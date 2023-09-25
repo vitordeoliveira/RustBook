@@ -45,5 +45,23 @@ fn main() {
     // The borrowing rules prevent programs from ending up in that situation.
     // println!("The first element is: {first}");
 
+    // Iterating over the Values in a Vector
+
+    let v: Vec<i32> = vec![100, 32, 57];
+    for n_ref in &v {
+        // n_ref has type &i32
+        let n_plus_one: i32 = *n_ref + 1;
+        println!("{n_plus_one}");
+    }
+    println!("{:?}", v);
+
+
+    let mut v = vec![100, 32, 57];
+    for n_ref in &mut v {
+        // n_ref has type &mut i32
+        *n_ref += 50;
+    }
+    println!("{:?}", v);
+
 
 }
