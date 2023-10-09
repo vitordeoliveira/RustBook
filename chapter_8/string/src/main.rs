@@ -93,11 +93,11 @@ fn main() {
     let hello = "Здравствуйте";
     let s = &hello[0..4];
     println!("s is {s}");
-    // if we were to try to slice only part of a character’s bytes with something like &hello[0..1], 
+    // if we were to try to slice only part of a character’s bytes with something like &hello[0..1],
     // Rust would panic at runtime in the same way as if an invalid index were accessed in a vector:
     // You should use ranges to create string slices with caution, because doing so can crash your program.
 
-    // way of solving 
+    // way of solving
     match hello.get(0..1) {
         Some(str_ref) => {
             println!("s is {}", str_ref);

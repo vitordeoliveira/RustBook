@@ -116,6 +116,6 @@ fn main() {
 
 //   The output of this program will be:
 //   5 5
-//   Context: i has type &mut i32, meaning it is a pointer to a number within v. 
+//   Context: i has type &mut i32, meaning it is a pointer to a number within v.
 //   So if we push i into v2, then v2 contains pointers to v. Therefore mutating v2[0] actually mutates v[0].
 }
