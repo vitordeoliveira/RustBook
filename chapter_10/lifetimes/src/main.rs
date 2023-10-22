@@ -102,4 +102,36 @@ fn main() {
     // see more in https://rust-book.cs.brown.edu/ch10-03-lifetime-syntax.html#lifetime-elision
 
     // Lifetime Annotations in Method Definitions
+    impl<'a> ImportantExcerpt<'a> {
+        fn level(&self) -> i32 {
+            3
+        }
+    }
+    impl<'a> ImportantExcerpt<'a> {
+        fn announce_and_return_part(&self, announcement: &str) -> &str {
+            println!("Attention please: {}", announcement);
+            self.part
+        }
+    }
+
+    // The Static Lifetime
+    // One special lifetime we need to discuss is 'static, which denotes that the affected reference can live for the entire duration of the program.
+    let s: &'static str = "I have a static lifetime.";
+
+    // The text of this string is stored directly in the program’s binary, which is always available. Therefore, the lifetime of all string literals is 'static.
+
+    // Generic Type Parameters, Trait Bounds, and Lifetimes Together
+    use std::fmt::Display;
+
+    fn longest_with_an_announcement<'a, T>(x: &'a str, y: &'a str, ann: T) -> &'a str
+    where
+        T: Display,
+    {
+        println!("Announcement! {}", ann);
+        if x.len() > y.len() {
+            x
+        } else {
+            y
+        }
+    }
 }
