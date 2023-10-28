@@ -136,3 +136,35 @@ mod tests {
     // To assert that an operation returns an Err variant, don’t use the question mark operator on the Result<T, E> value.
     // Instead, use assert!(value.is_err()).
 }
+
+// Testing Private Functions
+// There’s debate within the testing community about whether or not private functions should be tested directly,
+// and other languages make it difficult or impossible to test private functions.
+// Regardless of which testing ideology you adhere to, Rust’s privacy rules do allow you to test private functions.
+// Consider the code in Listing 11-12 with the private function internal_adder.
+
+#[cfg(test)]
+mod tests_private {
+    use super::*;
+    pub fn add_two(a: i32) -> i32 {
+        internal_adder(a, 2)
+    }
+
+    fn internal_adder(a: i32, b: i32) -> i32 {
+        a + b
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use super::*;
+
+        #[test]
+        fn internal() {
+            assert_eq!(4, internal_adder(2, 2));
+        }
+    }
+    #[test]
+    fn internal() {
+        assert_eq!(4, internal_adder(2, 2));
+    }
+}
