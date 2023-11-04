@@ -142,7 +142,6 @@ mod tests {
 // and other languages make it difficult or impossible to test private functions.
 // Regardless of which testing ideology you adhere to, Rust’s privacy rules do allow you to test private functions.
 // Consider the code in Listing 11-12 with the private function internal_adder.
-
 #[cfg(test)]
 mod tests_private {
     use super::*;
