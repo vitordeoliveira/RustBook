@@ -49,3 +49,10 @@ yank.
 cargo yank --vers 1.0.1
 cargo yank --vers 1.0.1 --undo
 ```
+
+> Note that if you want Rust to treat undocumented code as an error, you can
+> add the following statement at the root of your library:
+
+```rust-lang
+deny(missing_docs)]
+```
