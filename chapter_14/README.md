@@ -4,6 +4,7 @@
 
 - [More About Cargo and Crates.io](#more-about-cargo-and-cratesio)
   - [Deprecating Versions from Crates.io with cargo yank](#deprecating-versions-from-cratesio-with-cargo-yank)
+  - [Creating the Second Package in the workspaces](#creating-the-second-package-in-the-workspaces)
   <!--toc:end-->
 
 So far we’ve used only the most basic features of Cargo to build, run, and test
@@ -33,7 +34,7 @@ Cargo.lock files generated will not use the yanked version.
 Be careful, because a publish is permanent. The version can never be
 overwritten, and the code cannot be deleted. One major goal of crates.io is to
 act as a permanent archive of code so that builds of all projects that depend
-on crates from crates.io will continue to work. Allowing version deletions
+on crates from crates.io will continue to work.r Allowing version deletions
 would make fulfilling that goal impossible. However, there is no limit to the
 number of crate versions you can publish.
 
@@ -56,3 +57,23 @@ cargo yank --vers 1.0.1 --undo
 ```rust-lang
 deny(missing_docs)]
 ```
+
+## Creating the Second Package in the workspaces
+
+```rust-lang
+// inside the "Main" application
+[workspace]
+members = [
+    "adder", m
+    "add_one",
+]
+
+// package connect to another package
+[dependencies]
+add_one = { path = "../add_one" }
+
+// terminal
+cargo run -p package
+```
+
+> -p argument and the package name with cargo run
