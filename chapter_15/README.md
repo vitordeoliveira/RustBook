@@ -24,3 +24,14 @@ cover the most common smart pointers in the standard library:
 In addition, we’ll cover the interior mutability pattern where an immutable
 type exposes an API for mutating an interior value. We’ll also discuss
 reference cycles: how they can leak memory and how to prevent them.
+
+## Box
+
+### You’ll use them most often in these situations
+
+- When you have a type whose size can’t be known at compile time and you want
+  to use a value of that type in a context that requires an exact size
+- When you have a large amount of data and you want to transfer ownership but
+  ensure the data won’t be copied when you do so
+- When you want to own a value and you care only that it’s a type that
+  implements a particular trait rather than being of a specific type
