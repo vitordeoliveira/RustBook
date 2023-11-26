@@ -35,3 +35,47 @@ reference cycles: how they can leak memory and how to prevent them.
   ensure the data won’t be copied when you do so
 - When you want to own a value and you care only that it’s a type that
   implements a particular trait rather than being of a specific type
+
+## Deref
+
+### Trait to manage the dereference with \*var
+
+```rust
+impl<T> Deref for MyBox<T> {
+        type Target = T;
+
+        fn deref(&self) -> &Self::Target {
+            &self.0
+        }
+    }
+
+// OR
+
+impl Deref for CustomSmartPointer {
+    type Target = String;
+    fn deref(&self) -> &Self::Target {
+        &self.data
+    }
+}
+```
+
+## Drop
+
+### Trait to manage the destructor
+
+```rust
+impl Drop for CustomSmartPointer {
+    fn drop(&mut self) {
+        println!("Called");
+    }
+}
+```
+
+## RC\<T\>
+
+In the majority of cases, ownership is clear: you know exactly which variable
+owns a given value. However, there are cases when a single value might have
+multiple owners. For example, in graph data structures, multiple edges might
+point to the same node, and that node is conceptually owned by all of the edges
+that point to it. A node shouldn’t be cleaned up unless it doesn’t have any
+edges pointing to it and so has no owners.
