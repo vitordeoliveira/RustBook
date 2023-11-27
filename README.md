@@ -1,29 +1,64 @@
 # RustBook
 
+<!--toc:start-->
+
+- [RustBook](#rustbook)
+  - [Getting Started](#getting-started)
+  - [Programming a Guessing Game](#programming-a-guessing-game)
+  - [Common Programming Concepts](#common-programming-concepts)
+  - [Understanding Ownership](#understanding-ownership)
+  - [Using Structs to Structure Related Data](#using-structs-to-structure-related-data)
+  - [Enums and Pattern Matching](#enums-and-pattern-matching)
+  - [Managing Growing Projects with Packages, Crates, and Modules](#managing-growing-projects-with-packages-crates-and-modules)
+  - [Common Collections](#common-collections)
+  - [Error Handling](#error-handling)
+  - [Generic Types, Traits, and Lifetimes](#generic-types-traits-and-lifetimes)
+  - [Writing Automated Tests](#writing-automated-tests)
+  <!--toc:end-->
+
 ## Getting Started
+
 [Chapter 1][cap-1]
+
 ## Programming a Guessing Game
+
 [Chapter 2][cap-2]
+
 ## Common Programming Concepts
+
 [Chapter 3][cap-3]
+
 ## Understanding Ownership
+
 [Chapter 4][cap-4]
+
 ## Using Structs to Structure Related Data
+
 [Chapter 5][cap-5]
+
 ## Enums and Pattern Matching
+
 [Chapter 6][cap-6]
+
 ## Managing Growing Projects with Packages, Crates, and Modules
+
 [Chapter 7][cap-7]
+
 ## Common Collections
+
 [Chapter 8][cap-8]
+
 ## Error Handling
+
 [Chapter 9][cap-9]
+
 ## Generic Types, Traits, and Lifetimes
+
 [Chapter 10][cap-10]
+
 ## Writing Automated Tests
+
 [Chapter 11][cap-11]
-
-
 
 [cap-1]: ./chapter_1/README.md
 [cap-2]: ./chapter_2/README.md
