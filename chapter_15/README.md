@@ -79,3 +79,44 @@ multiple owners. For example, in graph data structures, multiple edges might
 point to the same node, and that node is conceptually owned by all of the edges
 that point to it. A node shouldn’t be cleaned up unless it doesn’t have any
 edges pointing to it and so has no owners.
+
+## RefCell\<T\>
+
+### The RefCell\<T\> type is useful when you’re sure your code follows the
+
+### borrowing rules but the compiler is unable to understand and guarantee that
+
+With references and Box\<T\>, the borrowing rules’ invariants are enforced at
+compile time. With RefCell\<T\>, these invariants are enforced at runtime. With
+references, if you break these rules, you’ll get a compiler error. With
+RefCell\<T\>, if you break these rules, your program will panic and exit.
+
+Interior mutability is a design pattern in Rust that allows you to mutate data
+even when there are immutable references to that data; normally, this action is
+disallowed by the borrowing rules. To mutate data, the pattern uses unsafe code
+inside a data structure to bend Rust’s usual rules that govern mutation and
+borrowing. Unsafe code indicates to the compiler that we’re checking the rules
+manually instead of relying on the compiler to check them for us; we will
+discuss unsafe code more in Chapter 19.
+
+### Here is a recap of the reasons to choose Box\<T\>, Rc\<T\>, or RefCell\<T\>:
+
+- Rc\<T\> enables multiple owners of the same data; Box\<T\> and RefCell\<T\>
+  have single owners.
+- Box\<T\> allows immutable or mutable borrows checked at
+  compile time; Rc\<T\> allows only immutable borrows checked at compile time;
+  RefCell\<T\> allows immutable or mutable borrows checked at runtime.
+- Because RefCell\<T\> allows mutable borrows checked at runtime, you can
+  mutate the value inside the RefCell\<T\> even when the RefCell\<T\> is
+  immutable.
+
+Choosing to catch borrowing errors at runtime rather than compile time, as
+we’ve done here, means you’d potentially be finding mistakes in your code later
+in the development process: possibly not until your code was deployed to
+production. Also, your code would incur a small runtime performance penalty as
+a result of keeping track of the borrows at runtime rather than compile time.
+However, using RefCell\<T\> makes it possible to write a mock object that can
+modify itself to keep track of the messages it has seen while you’re using it
+in a context where only immutable values are allowed. You can use RefCell\<T\>
+despite its trade-offs to get more functionality than regular references
+provide.
