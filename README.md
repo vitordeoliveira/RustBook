@@ -8,7 +8,7 @@
 [Chapter 3][cap-3]
 ## Understanding Ownership
 [Chapter 4][cap-4]
-## Understanding Ownership
+## Using Structs to Structure Related Data
 [Chapter 5][cap-5]
 ## Enums and Pattern Matching
 [Chapter 6][cap-6]
