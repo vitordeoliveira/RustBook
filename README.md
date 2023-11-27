@@ -11,7 +11,7 @@
 
 
 
-[cap-1]: ./cap_1/README.md
-[cap-2]: ./cap_2/README.md
-[cap-3]: ./cap_3/README.md
-[cap-4]: ./cap_4/README.md
+[cap-1]: ./chapter_1/README.md
+[cap-2]: ./chapter_2/README.md
+[cap-3]: ./chapter_3/README.md
+[cap-4]: ./chapter_4/README.md
