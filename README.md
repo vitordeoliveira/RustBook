@@ -60,6 +60,22 @@
 
 [Chapter 11][cap-11]
 
+## An I/O Project: Building a Command Line Program
+
+[Chapter 12][cap-12]
+
+## Functional Language Features: Iterators and Closures
+
+[Chapter 13][cap-13]
+
+## More About Cargo and Crates.io
+
+[Chapter 14][cap-14]
+
+## Smart Pointers
+
+[Chapter 15][cap-15]
+
 [cap-1]: ./chapter_1/README.md
 [cap-2]: ./chapter_2/README.md
 [cap-3]: ./chapter_3/README.md
