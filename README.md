@@ -70,4 +70,8 @@
 [cap-8]: ./chapter_8/README.md
 [cap-9]: ./chapter_9/README.md
 [cap-10]: ./chapter_10/README.md
-[cap-11]: ./chapter_10/README.md
+[cap-11]: ./chapter_11/README.md
+[cap-12]: ./chapter_12/README.md
+[cap-13]: ./chapter_13/README.md
+[cap-14]: ./chapter_14/README.md
+[cap-15]: ./chapter_15/README.md
