@@ -14,6 +14,10 @@
   - [Error Handling](#error-handling)
   - [Generic Types, Traits, and Lifetimes](#generic-types-traits-and-lifetimes)
   - [Writing Automated Tests](#writing-automated-tests)
+  - [An I/O Project: Building a Command Line Program](#an-io-project-building-a-command-line-program)
+  - [Functional Language Features: Iterators and Closures](#functional-language-features-iterators-and-closures)
+  - [More About Cargo and Crates.io](#more-about-cargo-and-cratesio)
+  - [Smart Pointers](#smart-pointers)
   <!--toc:end-->
 
 ## Getting Started
