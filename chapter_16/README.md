@@ -20,3 +20,9 @@ contexts has been difficult and error prone: Rust hopes to change that.
 - Shared-state concurrency, where multiple threads have access to some piece of data
 - The Sync and Send traits, which extend Rust’s concurrency guarantees to
   user-defined types as well as types provided by the standard library
+
+### Send and Sync
+
+The Send marker trait indicates that ownership of values of the type
+implementing Send can be transferred between threads.
+Almost every Rust type is Send, but there are some exceptions, including Rc\<T\>
