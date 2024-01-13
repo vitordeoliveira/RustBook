@@ -20,3 +20,16 @@ In this chapter, we’ll cover:
 - Macros: ways to define code that defines more code at compile time
 
 It’s a panoply of Rust features with something for everyone! Let’s dive in!
+
+## Unsafe Superpowers
+
+To switch to unsafe Rust, use the unsafe keyword and then start a new block
+that holds the unsafe code. You can take five actions in unsafe Rust that you
+can’t in safe Rust, which we call unsafe superpowers. Those superpowers include
+the ability to:
+
+- Dereference a raw pointer
+- Call an unsafe function or method
+- Access or modify a mutable static variable
+- Implement an unsafe traits
+- Access fields of unions
