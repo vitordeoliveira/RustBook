@@ -33,3 +33,5 @@ the ability to:
 - Access or modify a mutable static variable
 - Implement an unsafe traits
 - Access fields of unions
+
+## Advanced Traits
