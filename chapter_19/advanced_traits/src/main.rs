@@ -53,4 +53,37 @@ fn main() {
     }
 
     // Fully Qualified Syntax for Disambiguation: Calling Methods with the Same Name
+
+    trait Pilot {
+        fn fly(&self);
+    }
+
+    trait Wizard {
+        fn fly(&self);
+    }
+
+    struct Human;
+
+    impl Pilot for Human {
+        fn fly(&self) {
+            println!("This is your captain speaking.");
+        }
+    }
+
+    impl Wizard for Human {
+        fn fly(&self) {
+            println!("Up!");
+        }
+    }
+
+    impl Human {
+        fn fly(&self) {
+            println!("*waving arms furiously*");
+        }
+    }
+
+    let person = Human;
+    person.fly();
+
+    Wizard::fly(&person);
 }

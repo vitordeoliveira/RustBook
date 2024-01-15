@@ -1,5 +1,14 @@
 # Advanced Features
 
+<!--toc:start-->
+
+- [Advanced Features](#advanced-features)
+  - [Unsafe Superpowers](#unsafe-superpowers)
+  - [Advanced Traits](#advanced-traits) - [Default Generic Type
+  parameters](#default-generic-type-parameters) - [Operation
+  Overloading](#operation-overloading)
+  <!--toc:end-->
+
 By now, you’ve learned the most commonly used parts of the Rust programming
 language. Before we do one more project in Chapter 20, we’ll look at a few
 aspects of the language you might run into every once in a while, but may not
@@ -35,3 +44,29 @@ the ability to:
 - Access fields of unions
 
 ## Advanced Traits
+
+### Default Generic Type parameters
+
+\<PlaceholderType=ConcreteType\> syntax.
+
+```rust
+pub trait Iterator<MEAOW = String> {
+    type BLA;
+    fn next(&mut self, cat: MEAOW) -> Option<Self::BLA>;
+}
+
+impl Iterator<u32> for Counter {
+    type BLA = i32;
+    fn next(&mut self, cat: u32) -> Option<Self::BLA> {
+        println!("{cat}");
+        Some(10)
+    }
+}
+// With associated types, we don’t need to annotate types because we can’t
+// implement a trait on a type multiple times.
+`
+
+#### Operation Overloading
+
+We have exemples in main.rs
+```
