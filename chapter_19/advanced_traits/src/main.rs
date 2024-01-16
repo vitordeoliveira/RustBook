@@ -10,6 +10,7 @@ fn main() {
     // Default Generic Type Parameters and Operator Overloading
     // You specify a default type when declaring a generic type with the
     // <PlaceholderType=ConcreteType> syntax.
+    // An associated type cannot have a default, while a trait type parameter can have a default
 
     use std::ops::Add;
 
@@ -131,6 +132,8 @@ fn main() {
         y: i32,
     }
 
+    // after this line now Point2 need to implement Display because OutlinePrint force him to do
+    // this
     impl OutlinePrint for Point2 {}
 
     impl fmt::Display for Point2 {
