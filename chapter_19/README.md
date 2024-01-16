@@ -64,9 +64,8 @@ impl Iterator<u32> for Counter {
 }
 // With associated types, we don’t need to annotate types because we can’t
 // implement a trait on a type multiple times.
-`
+```
 
 #### Operation Overloading
 
 We have exemples in main.rs
-```
