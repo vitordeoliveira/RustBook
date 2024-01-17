@@ -4,9 +4,11 @@
 
 - [Advanced Features](#advanced-features)
   - [Unsafe Superpowers](#unsafe-superpowers)
-  - [Advanced Traits](#advanced-traits) - [Default Generic Type
-  parameters](#default-generic-type-parameters) - [Operation
-  Overloading](#operation-overloading)
+  - [Advanced Traits](#advanced-traits)
+    - [Default Generic Type parameters](#default-generic-type-parameters)
+      - [Operation Overloading](#operation-overloading)
+      - [Using the Newtype Pattern to Implement External Traits on External Types](#using-the-newtype-pattern-to-implement-external-traits-on-external-types)
+  - [Advanced Types](#advanced-types)
   <!--toc:end-->
 
 By now, you’ve learned the most commonly used parts of the Rust programming
@@ -69,3 +71,20 @@ impl Iterator<u32> for Counter {
 #### Operation Overloading
 
 We have exemples in main.rs
+
+#### Using the Newtype Pattern to Implement External Traits on External Types
+
+In a nutshell:
+
+we’re only allowed to implement a trait on a type if **EITHER** the trait
+**OR** the
+type are local to our crate. It’s possible to get around this restriction using
+the newtype pattern, which involves creating a new type in a tuple struct.
+
+## Advanced Types
+
+The Rust type system has some features that we’ve so far mentioned but haven’t
+yet discussed. We’ll start by discussing newtypes in general as we examine why
+newtypes are useful as types. Then we’ll move on to type aliases, a feature
+similar to newtypes but with slightly different semantics. We’ll also discuss
+the ! type and dynamically sized types.

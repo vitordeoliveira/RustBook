@@ -146,6 +146,7 @@ fn main() {
     point2.outline_print();
 
     // Using the Newtype Pattern to Implement External Traits on External Types
+    // we’re only allowed to implement a trait on a type if either the trait or the type are local to our crate
 
     struct Wrapper(Vec<String>);
 
