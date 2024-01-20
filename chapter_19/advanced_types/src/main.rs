@@ -90,15 +90,4 @@ fn main() {
     // Dynamically Sized Types and the Sized Trait
     //
     //
-    // these types let us write code using values whose size we can know only at runtime.
-    // We can’t know how long the string is until runtime, meaning we can’t create a variable of
-    // type str, nor can we take an argument of type str. Consider the following code, which does
-    // not work:
-    // let s1: str = "Hello there!";
-    // Rust needs to know how much memory to allocate for any value of a particular type, and all
-    // values of a type must use the same amount of memory. If Rust allowed us to write this code,
-    // these two str values would need to take up the same amount of space.
-    // So what do we do? In this case, you already know the answer: we make the types of s1 and s2 a &str rather than a str
-    // the slice data structure just stores the starting position and the length of the slice.
-    // The golden rule of dynamically sized types is that we must always put values of dynamically sized types behind a pointer of some kind.
 }
