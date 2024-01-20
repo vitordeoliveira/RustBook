@@ -41,17 +41,25 @@ fn main() {
     //
     //     fn add(self, rhs: Rhs) -> Self::Output;
     // }
-
+    #[derive(Debug, Copy, Clone, PartialEq)]
     struct Millimeters(u32);
-    struct Meters(u32);
+
+    #[derive(Debug, Copy, Clone, PartialEq)]
+    struct Meters {
+        a: u32,
+    }
 
     impl Add<Meters> for Millimeters {
         type Output = Millimeters;
 
         fn add(self, other: Meters) -> Millimeters {
-            Millimeters(self.0 + (other.0 * 1000))
+            Millimeters(self.0 + (other.a * 1000))
         }
     }
+
+    assert_eq!(Millimeters(10) + Meters { a: 10 }, Millimeters(10010));
+    // not implemented the oposite
+    // assert_eq!(Meters(10) + Millimeters(10), Millimeters(10010));
 
     // Fully Qualified Syntax for Disambiguation: Calling Methods with the Same Name
 
