@@ -88,3 +88,72 @@ yet discussed. We’ll start by discussing newtypes in general as we examine why
 newtypes are useful as types. Then we’ll move on to type aliases, a feature
 similar to newtypes but with slightly different semantics. We’ll also discuss
 the ! type and dynamically sized types.
+
+### Dynamically Sized Types and the Sized Trait
+
+These types let us write code using values whose size we can know only at
+runtime. We can’t know how long the string is until runtime, meaning we can’t
+create a variable of type str, nor can we take an argument of type str.
+
+Consider the following code, which does not work:
+
+```rust
+// does not compile
+let s1: str = "Hello there!";
+```
+
+Rust needs to know how much memory to allocate for any value of a particular
+type, and all values of a type must use the same amount of memory.
+
+If Rust allowed us to write this code, these two str values would need to take
+up the same amount of space.
+
+So what do we do? In this case, you already know the answer: we make the types
+of s1 and s2 a &str rather than a str the slice data structure just stores the
+starting position and the length of the slice.
+
+&str is two values: the address of the str and its length. As such, we can know
+the size of a &str value at compile time: it’s twice the length of a usize.
+That is, we always know the size of a &str, no matter how long the string it
+refers to is. In general, this is the way in which dynamically sized types are
+used in Rust: they have an extra bit of metadata that stores the size of the
+dynamic information.
+
+> **The golden rule of dynamically
+> sized types is that we must always put values of dynamically sized types behind
+> a pointer of some kind.**
+
+We can combine str with all kinds of pointers: for example, Box\<str\> or Rc\<str\>
+In fact, you’ve seen this before but with a different dynamically sized type: traits
+
+we mentioned that to use traits as trait objects, we must put them behind a
+pointer, such as &dyn Trait or Box\<dyn Trait\> (Rc\<dyn Trait\> would work too).
+
+```rust
+fn generic<T>(t: T) {
+    // --snip--
+}
+// equal to
+fn generic<T: Sized>(t: T) {
+    // --snip--
+}
+```
+
+By default, generic functions will work only on types that have a known size at
+compile time. However, you can use the following special syntax to relax this
+restriction:
+
+```rust
+fn generic<T: ?Sized>(t: &T) {
+    // --snip--
+}
+```
+
+A trait bound on ?Sized means “T may or may not be Sized” and this notation
+overrides the default that generic types must have a known size at compile
+time. The ?Trait syntax with this meaning is only available for Sized, not any
+other traits.
+
+Also note that we switched the type of the t parameter from T to &T. Because
+the type might not be Sized, we need to use it behind some kind of pointer. In
+this case, we’ve chosen a reference.
