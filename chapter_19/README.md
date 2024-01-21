@@ -9,6 +9,11 @@
       - [Operation Overloading](#operation-overloading)
       - [Using the Newtype Pattern to Implement External Traits on External Types](#using-the-newtype-pattern-to-implement-external-traits-on-external-types)
   - [Advanced Types](#advanced-types)
+    - [Dynamically Sized Types and the Sized Trait](#dynamically-sized-types-and-the-sized-trait)
+  - [Advanced Functions and Closures](#advanced-functions-and-closures)
+    - [Function Pointers](#function-pointers)
+    - [Returning Closures](#returning-closures)
+  - [Macros](#macros)
   <!--toc:end-->
 
 By now, you’ve learned the most commonly used parts of the Rust programming
@@ -186,8 +191,21 @@ to the same code, so use whichever style is clearer to you.
 
 The following code tries to return a closure directly, but it won’t compile:
 
-````rust
+```rust
 fn returns_closure() -> dyn Fn(i32) -> i32 {
 |x| x + 1
-}```
-````
+}
+```
+
+## Macros
+
+We’ve used macros like println! throughout this book, but we haven’t fully
+explored what a macro is and how it works. The term macro refers to a family of
+features in Rust: declarative macros with macro_rules! and three kinds of
+procedural macros:
+
+- Custom #[derive] macros that specify code added with the derive attribute
+  used on structs and enums
+- Attribute-like macros that define custom attributes usable on any item
+- Function-like macros that look like function calls but operate on the tokens
+  specified as their argument
