@@ -14,7 +14,9 @@
     - [Function Pointers](#function-pointers)
     - [Returning Closures](#returning-closures)
   - [Macros](#macros)
-  <!--toc:end-->
+    - [The Difference Between Macros and Functions](#the-difference-between-macros-and-functions)
+    - [Declarative Macros with macrorules for General Metaprogramming](#declarative-macros-with-macrorules-for-general-metaprogramming)
+    <!--toc:end-->
 
 By now, you’ve learned the most commonly used parts of the Rust programming
 language. Before we do one more project in Chapter 20, we’ll look at a few
@@ -209,3 +211,22 @@ procedural macros:
 - Attribute-like macros that define custom attributes usable on any item
 - Function-like macros that look like function calls but operate on the tokens
   specified as their argument
+
+### The Difference Between Macros and Functions
+
+Fundamentally, macros are a way of writing code that writes other code, which
+is known as metaprogramming.
+
+A function signature must declare the number and type of parameters the
+function has. Macros, on the other hand, can take a variable number of
+parameters: we can call println!("hello") with one argument or println!("hello
+{}", name) with two arguments. Also, macros are expanded before the compiler
+interprets the meaning of the code, so a macro can, for example, implement a
+trait on a given type. A function can’t, because it gets called at runtime and
+a trait needs to be implemented at compile time.
+
+Another important difference between macros and functions is that you must
+define macros or bring them into scope before you call them in a file, as
+opposed to functions you can define anywhere and call anywhere.
+
+### Declarative Macros with macrorules for General Metaprogramming
