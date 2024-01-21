@@ -157,3 +157,37 @@ other traits.
 Also note that we switched the type of the t parameter from T to &T. Because
 the type might not be Sized, we need to use it behind some kind of pointer. In
 this case, we’ve chosen a reference.
+
+## Advanced Functions and Closures
+
+This section explores some advanced features related to functions and closures,
+including function pointers and returning closures.
+
+### Function Pointers
+
+We’ve talked about how to pass closures to functions; you can also pass regular
+functions to functions! This technique is useful when you want to pass a
+function you’ve already defined rather than defining a new closure. Functions
+coerce to the type fn (with a lowercase f), not to be confused with the Fn
+closure trait. The fn type is called a function pointer. Passing functions with
+function pointers will allow you to use functions as arguments to other
+functions.
+
+That said, one example of where you would want to only accept fn and not
+closures is when interfacing with external code that doesn’t have closures: C
+functionos can accept functions as arguments, but C doesn’t have closures.
+
+### Returning Closures
+
+Here we create Status::Value instances using each u32 value in the range that
+map is called on by using the initializer function of Status::Value. Some
+people prefer this style, and some people prefer to use closures. They compile
+to the same code, so use whichever style is clearer to you.
+
+The following code tries to return a closure directly, but it won’t compile:
+
+````rust
+fn returns_closure() -> dyn Fn(i32) -> i32 {
+|x| x + 1
+}```
+````
