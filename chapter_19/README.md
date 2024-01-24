@@ -16,7 +16,11 @@
   - [Macros](#macros)
     - [The Difference Between Macros and Functions](#the-difference-between-macros-and-functions)
     - [Declarative Macros with macrorules for General Metaprogramming](#declarative-macros-with-macrorules-for-general-metaprogramming)
-    <!--toc:end-->
+    - [Procedural Macros for Generating Code from Attributes](#procedural-macros-for-generating-code-from-attributes)
+    - [Attribute-like macros](#attribute-like-macros)
+    - [Function-like macros](#function-like-macros)
+  - [Resume](#resume)
+  <!--toc:end-->
 
 By now, you’ve learned the most commonly used parts of the Rust programming
 language. Before we do one more project in Chapter 20, we’ll look at a few
@@ -230,3 +234,85 @@ define macros or bring them into scope before you call them in a file, as
 opposed to functions you can define anywhere and call anywhere.
 
 ### Declarative Macros with macrorules for General Metaprogramming
+
+The #\[macro_export\] annotation indicates that this macro should be made
+available whenever the crate in which the macro is defined is brought into
+scope. Without this annotation, the macro can’t be brought into scope.
+
+To learn more about how to write macros, consult the online documentation or
+other resources, such as [ “The Little Book of Rust Macros” ](https://veykril.github.io/tlborm/) started by Daniel
+Keep and continued by Lukas Wirth.
+
+### Procedural Macros for Generating Code from Attributes
+
+The second form of macros is the procedural macro, which acts more like a
+function (and is a type of procedure). Procedural macros accept some code as an
+input, operate on that code, and produce some code as an output rather than
+matching against patterns and replacing the code with other code as declarative
+macros do. The three kinds of procedural macros are custom derive,
+attribute-like, and function-like, and all work in a similar fashion.
+
+### Attribute-like macros
+
+Attribute-like macros are similar to custom derive macros, but instead of
+generating code for the derive attribute, they allow you to create new
+attributes. They’re also more flexible: derive only works for structs and
+enums; attributes can be applied to other items as well, such as functions.
+
+### Function-like macros
+
+Function-like macros define macros that look like function calls. Similarly to
+macro_rules! macros, they’re more flexible than functions; for example, they
+can take an unknown number of arguments. However, macro_rules! macros can be
+defined only using the match-like syntax we discussed in the section
+“Declarative Macros with macro_rules! for General Metaprogramming” earlier.
+Function-like macros take a TokenStream parameter and their definition
+manipulates that TokenStream using Rust code as the other two types of
+procedural macros do.
+
+## Resume
+
+Has 4 types of macros:
+
+1. Declarative Macros with \#\[macro_export\] macro_rules!
+
+   - The declarative macros uses something similar to a Rust match expression
+   - exemple:
+
+   - ```rust
+     let v: Vec<u32> = vec![1, 2, 3];
+     ```
+
+2. Procedural Macros (Custom derive Macro) with \#\[proc_macro_derive(MATCH_STRUCT_OR_ENUM_NAME)\]
+
+   - (input: TokenStream) -> TokenStream
+   - We use tokens instead of matching expressions
+   - exemple:
+
+   - ```rust
+     #[derive(HelloMacro)]
+     struct Pancakes;
+     ```
+
+3. Attribute-like macros with \#\[proc_macro_attribute\]
+
+   - (attr: TokenStream, item: TokenStream) -> TokenStream
+   - We use tokens instead of matching expressions
+   - They’re also more flexible: derive only works for structs and enums;
+     attributes can be applied to other items as well, such as functions.
+   - exemple:
+
+   - ```rust
+     #[route(GET, "/")]
+     fn index() {`
+     ```
+
+4. Function-like macros with \#\[proc_macro\]
+
+   - (input: TokenStream) -> TokenStream
+   - We use tokens instead of matching expressions
+   - exemple:
+
+   - ```rust
+     let sql = sql!(SELECT \* FROM posts WHERE id=1);
+     ```
