@@ -64,9 +64,15 @@ impl Worker {
         //     receiver;
         // });
         let thread = thread::spawn(move || loop {
-            let job = receiver.lock().unwrap().recv().unwrap();
+            // acquiring a lock might fail if the mutex is in a poisoned state, which can happen if
+            // some other thread panicked while holding the lock rather than releasing the lock.
+            let job = {
+                let lock = receiver.lock().unwrap();
+                println!("worker {id} lock the Mutex.");
+                lock.recv().unwrap()
+            };
 
-            println!("Worker {id} got a job; executing.");
+            println!("worker {id} got a job; executing.");
 
             job();
         });
