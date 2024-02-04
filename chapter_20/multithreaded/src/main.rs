@@ -20,7 +20,7 @@ fn main() {
     let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
 
     let pool = ThreadPool::new(4);
-    for stream in listener.incoming() {
+    for stream in listener.incoming().take(2) {
         let stream = stream.unwrap();
 
         // this will eventually overwhelm the system because you’d be making new threads without any limit.
@@ -31,6 +31,8 @@ fn main() {
             handle_connection(stream);
         });
     }
+
+    println!("MAIN FINISH, so now lets start to drop the ThreadPool");
 }
 
 fn handle_connection(mut stream: TcpStream) {
@@ -59,4 +61,5 @@ fn handle_connection(mut stream: TcpStream) {
     let response = format!("{status_line}\r\nContent-Length: {length}\r\n\r\n{contents}");
 
     stream.write_all(response.as_bytes()).unwrap();
+    // stream.flush().unwrap();
 }
